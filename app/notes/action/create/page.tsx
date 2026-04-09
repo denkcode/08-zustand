@@ -4,11 +4,11 @@ import { Metadata } from 'next';
 
 
 export const metadata: Metadata = {
-  title: "Create new notes",
-  description: "create notes",
+  title: "Create new note",
+  description: "Створіть нову нотатку для організації своїх думок та ідей.",
   openGraph: {
-      title: "Create new notes",
-      description: "Created notes",
+      title: "Create new note",
+      description: "Створіть нову нотатку для організації своїх думок та ідей.",
       url: `https://notehub.com/notes/action/create`,
       images: [
         {

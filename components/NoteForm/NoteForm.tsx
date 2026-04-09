@@ -4,31 +4,39 @@ import { createNote } from '@/lib/api';
 import { NoteTag } from '@/types/note'
 import { useRouter } from "next/navigation";
 import { useNoteDraftStore } from '@/lib/store/noteStore'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 
 export default function NoteForm() {
+  const { draft, setDraft, clearDraft } = useNoteDraftStore();
     const router = useRouter();
+  const queryClient = useQueryClient()
+  const mutation = useMutation({        
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes'] })
+      clearDraft()
+      router.back()
+    }
+  })
 
-    const { draft, setDraft, clearDraft } = useNoteDraftStore();
 
     async function formAction(formData: FormData) {
     const title = formData.get("title") as string
     const content = formData.get("content") as string
     const tag = formData.get("tag") as NoteTag
-    await createNote({ title, content, tag })
-    clearDraft()
-    router.push('/notes/filter/all')
+    mutation.mutate({ title, content, tag })
     }
         return (
         <form action={formAction} className={css.form}>
   <div className={css.formGroup}>
     <label htmlFor="title">Title</label>
-    <input defaultValue={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} id="title" type="text" name="title" className={css.input} />
+    <input defaultValue={draft.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDraft({ ...draft, title: e.target.value })} id="title" type="text" name="title" className={css.input} />
   </div>
 
   <div className={css.formGroup}>
     <label htmlFor="content">Content</label>
-    <textarea defaultValue={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })}
+    <textarea defaultValue={draft.content} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDraft({ ...draft, content: e.target.value })}
       id="content"
       name="content"
       rows={8}
@@ -38,7 +46,7 @@ export default function NoteForm() {
 
   <div className={css.formGroup}>
     <label htmlFor="tag">Tag</label>
-    <select defaultValue={draft.tag} onChange={(e) => setDraft({ ...draft, tag: e.target.value as NoteTag })} id="tag" name="tag" className={css.select}>
+    <select defaultValue={draft.tag} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setDraft({ ...draft, tag: e.target.value as NoteTag })} id="tag" name="tag" className={css.select}>
       <option value="Todo">Todo</option>
       <option value="Work">Work</option>
       <option value="Personal">Personal</option>

@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description: "Created GoIT",
   openGraph: {
       title: "Note Hub",
-      description: "Created by Fsociety",
-      url: `https://notehub.com/notes/`,
+      description: "Created GoIT",
+      url: `https://notehub.com/`,
       images: [
         {
           url: 'https://ac.goit.global/fullstack/react/og-meta.jpg',

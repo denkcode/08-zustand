@@ -19,7 +19,6 @@ export default function Notes({ tag }: PropsViewFilter) {
       const [search, setSearch] = useState('')
       const [page, setPage] = useState(1);
       const { data, isLoading, isError } = useQuery<FetchNotesResponse>({
-        throwOnError: true,
         queryKey: ['notes', page, search, tag],
         queryFn: () => fetchNotes(page, search, tag),
         placeholderData: keepPreviousData,
