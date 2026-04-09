@@ -8,3 +8,13 @@ export interface Note {
     updatedAt: string,
     tag: NoteTag
 }
+
+export type Props = {
+  params: Promise<{ id: string }>
+}
+
+export interface NewNotePayload {
+  title: string;
+  content: string;
+  tag: NoteTag
+}

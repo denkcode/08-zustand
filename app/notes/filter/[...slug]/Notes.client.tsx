@@ -1,5 +1,5 @@
 'use client'
-
+import Link from 'next/link'
 import css from '@/app/App.module.css'
 import NoteList from '@/components/NoteList/NoteList'
 import { useDebouncedCallback } from 'use-debounce'
@@ -10,8 +10,6 @@ import { fetchNotes, FetchNotesResponse } from '@/lib/api'
 import Loader from '@/components/Loader/Loader'
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import SearchBox from '@/components/SearchBox/SearchBox'
-import Modal from '@/components/Modal/Modal'
-import NoteForm from '@/components/NoteForm/NoteForm'
 
 interface PropsViewFilter {
     tag: string
@@ -31,7 +29,6 @@ export default function Notes({ tag }: PropsViewFilter) {
       setSearch(value);
       setPage(1)
       }, 300);
-      const [isModalOpen, setIsModalOpen] = useState(false);
     return (
           <div className={css.app}>
 	        <header className={css.toolbar}>
@@ -39,14 +36,8 @@ export default function Notes({ tag }: PropsViewFilter) {
             setInputValue(value);
             debouncedSearch(value);
             }} />
-		    <button className={css.button} onClick={() => setIsModalOpen(true)}>
-            Create note +</button>
+            <Link href="/notes/action/create">Create note+</Link>
             </header>
-            {isModalOpen && (
-            <Modal onClose={() => setIsModalOpen(false)}>
-            <NoteForm onClose={() => setIsModalOpen(false)} />
-            </Modal>
-            )}
   {isLoading && <Loader />}
   {isError && <ErrorMessage message="Something went wrong!"/>}
   {data?.notes && data.notes.length > 0 && <NoteList notes={data.notes} />}
